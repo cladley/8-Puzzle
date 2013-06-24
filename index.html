@@ -1,0 +1,95 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>This is my idea</title>
+
+    <style type="text/css" >
+        #main_container {
+            background-color: green;
+            width: 700px;
+            padding: 50px;
+            margin: auto;
+        }
+
+        #game_board {
+            width: 600px;
+            height: 600px;
+            background: white;
+            margin: auto;
+            position: relative;
+        }
+    </style>
+
+</head>
+<body>
+     <div id="main_container">
+        <div id="game_board">
+
+        </div>
+    </div>
+    <br />
+    <button id="solve">
+        Solve
+    </button>
+ 
+
+    <script type="text/javascript" src="jquery-1.8.3.js"></script>
+    <script type="text/javascript" src="solver.js"></script>
+    <script type="text/javascript" src="slidepuzzle.js"></script>
+
+    <script type="text/javascript">
+
+        // Runs a set of functions in sequence.
+        // i.e when one finishes, then next is started
+        function queue(funcs, delay) {
+            var i;
+            var o;
+
+            setTimeout(function run() {
+                o = funcs.shift();
+                if (o !== undefined) {
+                    o.fnc(o.args[0], o.args[1]);
+                    setTimeout(run, delay);
+                }
+            }, delay);
+
+        }
+
+
+        var gameboard = $('#game_board');
+        var game = slidePuzzle.Game.newGame(gameboard, 'dog.jpg', 'easy');
+
+     
+
+        $('#solve').on('click', function () {
+            var blocks = game.getBoardArray();
+     
+            var board = new Board(blocks);
+            var solution = Solver.create(board);
+            if (solution.isSolvable) {
+                var q = [];
+                var boards = solution.getSolution();
+              
+                for (var i = 0; i < boards.length; i++) {
+                    boards[i].printBoard();
+                    if (boards[i].move !== undefined) {
+                        q.push({ fnc: game.movePosition, args: [boards[i].move[0], boards[i].move[1]] })
+                    }    
+                }
+                
+                queue(q, 100);
+              
+          
+            } else {
+                console.log("No solution found");
+            }
+        });
+
+
+      
+        
+    </script>
+</body>
+</html>
