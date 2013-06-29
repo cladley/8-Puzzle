@@ -1,4 +1,8 @@
-8 Puzzle
+8 puzzle
 ========
 
+8 piece sliding puzzle that uses the A* algorithm to solve it using a priority queue
+
+
+check it [out](http://kiznore.pythonanywhere.com/puzzle/)
 
